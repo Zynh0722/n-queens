@@ -50,6 +50,8 @@ window.countNRooksSolutions = function(n) {
 
   let solutionCount = 0;
 
+  let usedCols = {};
+
   let nRooksHelper = function (row = 0, count = 0) {
     if (row >= n) {
       solutionCount++;
@@ -57,10 +59,12 @@ window.countNRooksSolutions = function(n) {
     }
 
     for (let i = 0; i < n; i++) {
-      board.rows()[row][i] = 1;
+      if (usedCols[i] === undefined) {
+        board.rows()[row][i] = 1;
 
-      if (!board.hasColConflictAt(i)) {
+        usedCols[i] = true;
         nRooksHelper(row + 1, count);
+        usedCols[i] = undefined;
       }
 
       board.rows()[row][i] = 0;
