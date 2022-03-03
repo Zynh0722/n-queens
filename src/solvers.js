@@ -115,6 +115,8 @@ window.countNQueensSolutions = function(n) {
 
   let solutionCount = 0;
 
+  let usedCols = {};
+
   let nQueensHelper = function (row = 0, count = 0) {
     if (row >= n) {
       solutionCount++;
@@ -124,10 +126,12 @@ window.countNQueensSolutions = function(n) {
     for (let i = 0; i < n; i++) {
       board.rows()[row][i] = 1;
 
-      if (!board.hasColConflictAt(i) &&
+      if (usedCols[i] === undefined &&
           !board.hasAnyMajorDiagonalConflicts(row, i) &&
           !board.hasAnyMinorDiagonalConflicts(row, i)) {
+        usedCols[i] = true;
         nQueensHelper(row + 1, count);
+        usedCols[i] = undefined;
       }
 
       board.rows()[row][i] = 0;
